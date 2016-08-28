@@ -16,6 +16,8 @@ Dir.chdir APP_ROOT do
   # unless File.exist?("config/database.yml")
   #   system "cp config/database.yml.sample config/database.yml"
   # end
+  puts "\n== creating db user =="
+  system "createuser --createrole chitrana__web"
 
   puts "\n== Preparing database =="
   system "bin/rake db:setup"
