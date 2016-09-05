@@ -27,3 +27,11 @@ test:
 production:
   <<: *default
   database: db/production.sqlite3
+
+eis:
+  <<: *default
+  host: eis-reporting-slavedb.enova.com
+  database: staging
+  username: smittapalli
+  password:
+  min_messages: warning
