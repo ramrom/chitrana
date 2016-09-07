@@ -22,5 +22,8 @@ module Chitrana
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # use raw SQL instead of ruby/active-record code to build the dump file
+    config.active_record.schema_format = :sql
   end
 end
