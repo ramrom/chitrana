@@ -4,4 +4,12 @@ class Chart < ActiveRecord::Base
     result = EISSource.connection.execute sql
     result.to_a
   end
+
+  def self.get_cached_data
+    Rails.cache.fetch "mykey"
+  end
+
+  def self.put_cached_data
+    Rails.cache.write "mykey", "mydata", expires_in: 5.seconds
+  end
 end
