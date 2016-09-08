@@ -16,8 +16,8 @@ class CreateBaseTables < ActiveRecord::Migration
       CREATE TABLE charts
       (
         chart_id      serial PRIMARY KEY,
-        column_name1  varchar(32),
-        column_name3  int,
+        name          varchar(32),
+        description   varchar(64),
         created_at    timestamp NOT NULL,
         updated_at    timestamp NOT NULL
       );
