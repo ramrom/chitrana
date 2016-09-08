@@ -1,5 +1,8 @@
 class CreateBaseTables < ActiveRecord::Migration
   def up
+    #execute <<-SQL
+    #  CREATE SCHEMA CHITRANA;
+    #SQL
     create_charts_table
     #create_data_sources_table
     #create_users_table
@@ -15,18 +18,19 @@ class CreateBaseTables < ActiveRecord::Migration
     execute <<-SQL
       CREATE TABLE charts
       (
-        chart_id      serial PRIMARY KEY,
-        name          varchar(32),
-        description   varchar(64),
-        created_at    timestamp NOT NULL,
-        updated_at    timestamp NOT NULL
+        chart_id        serial PRIMARY KEY,
+        name            varchar(32),
+        description     varchar(64),
+        query           text,
+        created_at      timestamp NOT NULL,
+        updated_at      timestamp NOT NULL
       );
     SQL
   end
 
   def create_data_sources_table
     execute <<-SQL
-      CREATE TABLE data_sources
+      CREATE TABLE chitrana.data_sources
       (
         data_source_id serial PRIMARY KEY,
         data_source    VARCHAR(32),
@@ -39,7 +43,7 @@ class CreateBaseTables < ActiveRecord::Migration
 
   def create_users_table
     execute <<-SQL
-      CREATE TABLE users
+      CREATE TABLE chitrana.users
       (
         user_id     serial PRIMARY KEY,
         username    varchar(32),

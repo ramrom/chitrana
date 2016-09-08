@@ -21,8 +21,9 @@ SET default_with_oids = false;
 
 CREATE TABLE charts (
     chart_id integer NOT NULL,
-    column_name1 character varying(32),
-    column_name3 integer,
+    name character varying(32),
+    description character varying(64),
+    query text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
