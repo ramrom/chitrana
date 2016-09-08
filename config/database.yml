@@ -9,6 +9,7 @@ default: &default
   encoding: unicode
   pool: 5
   timeout: 5000
+  schema_search_path: chitrana, public
 
 development: &development
   <<: *default
