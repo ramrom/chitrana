@@ -1,16 +1,52 @@
 class CreateBaseTables < ActiveRecord::Migration
   def up
-    execute <<-SQL
-      CREATE TABLE table_name
-      (
-      column_name1 data_type(size),
-      column_name2 data_type(size),
-      column_name3 data_type(size),
-      );
-    SQL
+    create_charts_table
+    #create_data_sources_table
+    #create_users_table
+
+    # TODO: create indexes
   end
 
   def down
     raise ActiveRecord::IrreversibleMigration
+  end
+
+  def create_charts_table
+    execute <<-SQL
+      CREATE TABLE charts
+      (
+        chart_id      serial PRIMARY KEY,
+        column_name1  varchar(32),
+        column_name3  int,
+        created_at    timestamp NOT NULL,
+        updated_at    timestamp NOT NULL
+      );
+    SQL
+  end
+
+  def create_data_sources_table
+    execute <<-SQL
+      CREATE TABLE data_sources
+      (
+        data_source_id serial PRIMARY KEY,
+        data_source    VARCHAR(32),
+        description    text,
+        created_at     timestamp NOT NULL,
+        updated_at     timestamp NOT NULL
+      );
+    SQL
+  end
+
+  def create_users_table
+    execute <<-SQL
+      CREATE TABLE users
+      (
+        user_id     serial PRIMARY KEY,
+        username    varchar(32),
+        config      json,
+        created_at  timestamp NOT NULL,
+        updated_at  timestamp NOT NULL
+      );
+    SQL
   end
 end
