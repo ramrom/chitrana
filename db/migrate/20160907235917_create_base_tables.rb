@@ -3,7 +3,7 @@ class CreateBaseTables < ActiveRecord::Migration
     #execute <<-SQL
     #  CREATE SCHEMA CHITRANA;
     #SQL
-    create_charts_table
+    create_metrics_table
     #create_data_sources_table
     #create_users_table
 
@@ -14,11 +14,11 @@ class CreateBaseTables < ActiveRecord::Migration
     raise ActiveRecord::IrreversibleMigration
   end
 
-  def create_charts_table
+  def create_metrics_table
     execute <<-SQL
-      CREATE TABLE charts
+      CREATE TABLE metrics
       (
-        chart_id        serial PRIMARY KEY,
+        metric_id       serial PRIMARY KEY,
         name            varchar(32),
         description     varchar(64),
         query           text,
