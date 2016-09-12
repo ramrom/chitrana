@@ -3,12 +3,12 @@ class User < ActiveRecord::Base
     {
       user_name: 'bob',
       dashboard: {
-        panes: {
-          foo_pane: [
+        panels: {
+          foo_panel: [
             { chart_name: 'foo_chart', refresh_interval: 60 },
             { chart_name: 'bar_chart', refresh_interval: 60 }
           ],
-          bar_pane: [
+          bar_panel: [
             { chart_name: 'yo_chart', refresh_interval: 60 },
             { chart_name: 'wee_chart', refresh_interval: 60 }
           ]

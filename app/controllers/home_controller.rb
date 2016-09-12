@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   end
 
   def chart_data
-    render json: Chart.get_data
+    render json: Metric.get_data
   end
 
   def d3
