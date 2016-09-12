@@ -16,11 +16,11 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: charts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: metrics; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE charts (
-    chart_id integer NOT NULL,
+CREATE TABLE metrics (
+    metric_id integer NOT NULL,
     name character varying(32),
     description character varying(64),
     query text,
@@ -30,10 +30,10 @@ CREATE TABLE charts (
 
 
 --
--- Name: charts_chart_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: metrics_metric_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE charts_chart_id_seq
+CREATE SEQUENCE metrics_metric_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -42,10 +42,10 @@ CREATE SEQUENCE charts_chart_id_seq
 
 
 --
--- Name: charts_chart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: metrics_metric_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE charts_chart_id_seq OWNED BY charts.chart_id;
+ALTER SEQUENCE metrics_metric_id_seq OWNED BY metrics.metric_id;
 
 
 --
@@ -58,18 +58,18 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: chart_id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: metric_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY charts ALTER COLUMN chart_id SET DEFAULT nextval('charts_chart_id_seq'::regclass);
+ALTER TABLE ONLY metrics ALTER COLUMN metric_id SET DEFAULT nextval('metrics_metric_id_seq'::regclass);
 
 
 --
--- Name: charts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY charts
-    ADD CONSTRAINT charts_pkey PRIMARY KEY (chart_id);
+ALTER TABLE ONLY metrics
+    ADD CONSTRAINT metrics_pkey PRIMARY KEY (metric_id);
 
 
 --
