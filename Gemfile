@@ -36,6 +36,7 @@ gem 'redis-rails'
 
 group :development, :test do
   gem 'pry'
+  gem 'react-rails-hot-loader'
 end
 
 group :development do
