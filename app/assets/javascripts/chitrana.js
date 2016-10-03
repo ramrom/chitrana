@@ -20,8 +20,18 @@ function drawGraph(parent_tag, name, data, size) {
       height = height - margin.top - margin.bottom;
 
   //var svg = $('body').append("<svg id="+name+"></svg>")
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select('#'+parent_tag).append("svg")
     .attr("id", name)
+    //.style(box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    //.attr('class', 'z-depth-5')  - bootstrap shadow
+    .style('box-shadow', '10px 10px 5px grey')
+    .style('border-radius', '30px')
+    .style('background-color', 'white')
+    .style('border','10px')
+    .style('border-color','black')
+    .style('border-style','double')
+    .style('padding','10px')
+    .style('margin','10px')
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -87,4 +97,10 @@ function drawGraph(parent_tag, name, data, size) {
   svg.append("g")
     .attr('class', 'axis')
     .call(d3.axisLeft(y));
+
+  // Area fill under graph
+  //var area = d3.svg.area()
+  //  .x(function(d) { return x(d.date); })
+  //  .y0(height)
+  //  .y1(function(d) { return y(d.close); });
 }
