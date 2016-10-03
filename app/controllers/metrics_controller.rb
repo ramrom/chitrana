@@ -1,8 +1,5 @@
-class HomeController < ApplicationController
+class MetricsController < ApplicationController
   def index
-  end
-
-  def bootstrap
   end
 
   def metric_data
@@ -14,14 +11,12 @@ class HomeController < ApplicationController
     render json: [{ time: 1, val: 2 }, { time: 2, val: 3}]
   end
 
-  def d3
-    render 'd3', locals: { a: 1 }
+  def show
   end
 
-  def d4
+  def create
   end
 
-  private
-
-
+  def update
+  end
 end

@@ -24,9 +24,9 @@ function drawGraph(parent_tag, name, data, size) {
     .attr("id", name)
     //.style(box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     //.attr('class', 'z-depth-5')  - bootstrap shadow
-    .style('box-shadow', '10px 10px 5px grey')
+    .style('box-shadow', '10px 10px 5px black')
     .style('border-radius', '30px')
-    .style('background-color', 'white')
+    .style('background-color', '#333333')
     .style('border','10px')
     .style('border-color','black')
     .style('border-style','double')
@@ -38,7 +38,7 @@ function drawGraph(parent_tag, name, data, size) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   var parseTime = d3.timeParse("%d-%b-%y");
-  data.forEach(function(d) { d.date = parseTime(d.date); d.close = +d.close; });
+  data.forEach(function(d) { d.date = parseTime(d.date); d.value = +d.value; });
 
   // set the ranges
   var x = d3.scaleTime().range([0, width]);
@@ -46,17 +46,17 @@ function drawGraph(parent_tag, name, data, size) {
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.close; })]);
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
   // define the line
   var valueline = d3.line()
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.close); });
+    .y(function(d) { return y(d.value); });
 
   // add the valueline path.
   svg.append("path")
     .data([data])
-    .style('stroke-width', 2)
+    .style('stroke-width', 6)
     .style('fill', 'none')
     .style('stroke', 'steelblue')
     .attr("class", "line")
@@ -66,7 +66,7 @@ function drawGraph(parent_tag, name, data, size) {
   function make_y_gridlines() { return d3.axisLeft(y).ticks(5) }
 
   // add the X gridlines
-  x_grid = svg.append("g")
+  var x_grid = svg.append("g")
     .attr("class", "grid")
     .attr("transform", "translate(0," + height + ")")
     .call(make_x_gridlines()
@@ -77,30 +77,32 @@ function drawGraph(parent_tag, name, data, size) {
   //x_grid.selectAll('line').style('stroke', 'lightgrey').style('stroke-opacity', 0.7).style('shape-rendering', 'crispEdges');
   
   // add the Y gridlines
-  y_grid = svg.append("g")
+  var y_grid = svg.append("g")
     .attr("class", "grid")
     .call(make_y_gridlines()
         .tickSize(-width)
         .tickFormat(""));
 
   $('#' + name + ' .grid line')
-    .css({'stroke': 'lightgrey', 'stroke-opacity': 0.7, 'shape-rendering': 'crispEdges'});
+    .css({'stroke': '#666666', 'stroke-opacity': 0.7, 'shape-rendering': 'crispEdges'});
   $('#' + name + ' .grid path').css({'stroke-width': 0});
 
   // add the X Axis
   svg.append("g")
     .attr('class', 'axis')
+    .style('stroke','#dddddd')
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
   
   // add the Y Axis
   svg.append("g")
     .attr('class', 'axis')
+    .style('stroke','#dddddd')
     .call(d3.axisLeft(y));
 
   // Area fill under graph
   //var area = d3.svg.area()
   //  .x(function(d) { return x(d.date); })
   //  .y0(height)
-  //  .y1(function(d) { return y(d.close); });
+  //  .y1(function(d) { return y(d.value); });
 }
