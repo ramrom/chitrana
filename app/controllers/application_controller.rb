@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
   # TODO: Pobably dont need this as this back end should be API only
   #protect_from_forgery with: :exception
 
+  rescue_from StandardError do |ex|
+    error = { error: "exception", message: ex.message, class: ex.class.name, backtrace: ex.backtrace }
+    Rails.logger.error "Rendering unexpected error: #{error.to_json}"
+    render json: { errors: [error] }, status: 500
+  end
+
   rescue_from ActiveRecord::RecordNotFound do
     head :not_found
   end

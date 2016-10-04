@@ -4,7 +4,12 @@ class MetricsController < ApplicationController
   end
 
   def get_data
-    render json: Metric.get_data(metric_name: params.require(:metric_name))
+    metric_response = Metric.get_data(metric_name: params.require(:metric_name))
+    if metric_response[:error].present?
+      render json: metric_response, status: :unprocessable_entity
+    else
+      render json: metric_response
+    end
   end
 
   def test_ajax
