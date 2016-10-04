@@ -5,11 +5,13 @@ loans_per_day_eis:
     where created_at > CURRENT_DATE - 7
     group by 1,2 order by 2 desc,1 desc;
   data_source: eis
+  cache_duration: 3600 # 1 hour
 
 loans_per_day_pf:
   sql:
     select extract(day from l.created_at) as day,extract(month from l.created_at) as month,count(*)
-    from portfolio.loanss l
+    from portfolio.loans l
     where created_at > CURRENT_DATE - 7
     group by 1,2 order by 2 desc,1 desc;
   data_source: portfolio
+  cache_duration: 60

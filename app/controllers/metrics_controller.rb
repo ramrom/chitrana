@@ -4,8 +4,7 @@ class MetricsController < ApplicationController
   end
 
   def get_data
-    metric_name = params.require(:metric_name)
-    render json: Metric.get_data(metric_name: metric_name)
+    render json: Metric.get_data(metric_name: params.require(:metric_name))
   end
 
   def test_ajax

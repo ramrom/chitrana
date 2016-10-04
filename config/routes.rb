@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :metrics,   only: [:index, :show, :create, :update]
 
   controller :metrics do
-    get '/get_data'       => 'metrics#metric_data'
+    get '/get_data'       => 'metrics#get_data'
     get '/test_ajax'      => 'metrics#test_ajax'
   end
 

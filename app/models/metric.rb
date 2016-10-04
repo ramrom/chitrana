@@ -1,29 +1,64 @@
 class Metric < ActiveRecord::Base
   def self.get_data(metric_name:, opts: {})
+    start_time = Time.now
+    cache_expiration = 'unknown'
+    cache_hit = false
+
     metric = AppConfig.metrics[metric_name]
     return { error: "#{metric_name} metric name does not exist" } if metric.blank?
 
-    #result = retrieve_from_cache unless options[:ignore_cache].present?
+    if options[:ignore_cache].present?
+      result = retrieve_from_data_source(metric)
+      return result if result[:error].present?
+      Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
+    else
+      cache_object = Rails.cache.send(:read_entry, metric_name, {})
+      if cache_object.kind_of?(ActiveSupport::Cache::Entry)
+        cache_hit = true
+        cache_expiration = Time.at(cache_object.expires_at) - Time.now
+        result = Rails.cache.read metric_name
+      else
+        result = retrieve_from_data_source(metric)
+        return result if result[:error].present?
+        Rails.cache.write metric_name, result, expires_at: metric.cache_duration.seconds
+      end
+    end
 
+    total_time = Time.now - start_time
+    Rails.logger.info "metric_name: #{metric_name}, query_time: #{total_time},\
+      cache_hit: #{cache_hit}, cache_expiration: #{cache_expiration}"
+    {
+      data: result,
+      query_time: total_time,
+      cache_hit: cache_hit,
+      cache_expiration: cache_expiration
+    }
+  end
+
+  def self.retrieve_from_data_source(metric)
     case metric.data_source
     when 'portfolio'
       result = DataSource.portfolio_db.exec metric.sql
+      transform_data(result)
     when 'eis'
       result = EISSource.connection.execute metric.sql
+      transform_data(result)
     else
-      return { error: "metric #{metric_name}, unknown data source: #{metric.data_source}" }
+      { error: "metric #{metric_name}, unknown data source: #{metric.data_source}" }
     end
+  rescue PG::Error, ActiveRecord::Error => e
+    { error: e.message, stack: e.backtrace }
+  end
+
+  def self.transform_data(result)
     result.to_a
   end
 
-  def self.retrive_from_data_source
-  end
-
-  def self.get_cached_data
+  def self.retrieve_data_from_cache
     Rails.cache.fetch "mykey"
   end
 
-  def self.put_cached_data
+  def self.write_data_to_cache
     Rails.cache.write "mykey", "mydata", expires_in: 5.seconds
   end
 
