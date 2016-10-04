@@ -4,10 +4,9 @@ A dashboard for creating dynamic charts using
 
 In sanksrit chitrana roughly means "chart" or "drawing"
 
-Tech that is used:
+#### Tech:
 - Rails: back-end API to get chart data to render and user configs
-- Ember.js: Front-end to implement a single page application
-- React.js: Front-end to implement a single page application
-- d3js: library to actually render each chart
+- *TODO*: React.js: Front-end to implement a single page application
+- d3js: library to actually render the charts/graphs
 - bootstrap: css/html library used to render pretty parts of the UI
 - redis: back-end caching of chart data
