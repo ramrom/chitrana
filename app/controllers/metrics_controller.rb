@@ -1,10 +1,11 @@
 class MetricsController < ApplicationController
   def index
+    render json: Metric.all.limit(10)
   end
 
-  def metric_data
-    metric = params.require(:metric)
-    render json: Metric.get_data(metric)
+  def get_data
+    metric_name = params.require(:metric_name)
+    render json: Metric.get_data(metric_name: metric_name)
   end
 
   def test_ajax

@@ -1,7 +1,11 @@
 class DataSource
-  def self.local_db
+  def self.chitrana_db
     conn = PG::Connection.open(dbname: 'chitrana_development')
     # conn.exec 'select * from blah'
+  end
+
+  def self.portfolio_db
+    conn = PG::Connection.open(dbname: 'portfolio_development')
   end
 
   def self.pp(res)

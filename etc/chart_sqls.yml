@@ -1,7 +1,0 @@
-loans_per_day:
-  sql:
-    select extract(day from l.created_at) as day,extract(month from l.created_at) as month,count(*)
-    from nbox_portfolio_portfolio.loans l
-    where created_at > CURRENT_DATE - 7
-    group by 1,2 order by 2 desc,1 desc;
-  data_source: EIS
