@@ -27,6 +27,6 @@ module Chitrana
     config.active_record.schema_format = :sql
 
     # configure cache store
-    config.cache_store = :redis_store, "redis://localhost:6379"
+    config.cache_store = :redis_store, "redis://localhost:6379/0/chitrana"
   end
 end

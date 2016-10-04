@@ -9,9 +9,9 @@ loans_per_day_eis:
 
 loans_per_day_pf:
   sql:
-    select extract(day from l.created_at) as day,extract(month from l.created_at) as month,count(*)
+    select extract(day from l.created_at) as day,extract(month from l.created_at) as month,extract(year from l.created_at),count(*)
     from portfolio.loans l
     where created_at > CURRENT_DATE - 7
-    group by 1,2 order by 2 desc,1 desc;
+    group by 1,2,3 order by 3 desc,2 desc,1 desc;
   data_source: portfolio
   cache_duration: 60

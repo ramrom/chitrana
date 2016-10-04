@@ -13,6 +13,10 @@ data sources:
   - a source or data to query
 
 chart:
+  - area fills in graphs
+  - x and y axis labels
+  - graph label
+  - atleast two themes, dark and light
   - a specific metric or data being displayed in a specific format
     - e.g. weather in chicago per day over for the last week, displayed as a line chart
   - it has properties
@@ -32,6 +36,10 @@ chart on FE with d3js:
   - shows a spinner icon or something when data (ajax call) is in process of being fetched
   - display/remove axis labels
   - display/remove grid lines for line and bar chart
+
+- Admin
+  - globally accessible, so you can display easy in a panel
+  - diags, should be able to see all charts and next call for ajax data refresh
 
 
 TODO FOR SURE:
