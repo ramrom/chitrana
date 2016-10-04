@@ -7,7 +7,7 @@ class Metric < ActiveRecord::Base
     metric = AppConfig.metrics[metric_name]
     return { error: "#{metric_name} metric name does not exist" } if metric.blank?
 
-    if options[:ignore_cache].present?
+    if opts[:ignore_cache].present?
       result = retrieve_from_data_source(metric)
       return result if result[:error].present?
       Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
@@ -19,8 +19,9 @@ class Metric < ActiveRecord::Base
         result = Rails.cache.read metric_name
       else
         result = retrieve_from_data_source(metric)
-        return result if result[:error].present?
-        Rails.cache.write metric_name, result, expires_at: metric.cache_duration.seconds
+        return result if result.kind_of?(Hash) && result[:error].present?
+        Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
+        cache_expiration = metric.cache_duration
       end
     end
 
