@@ -47,7 +47,7 @@ class Metric < ActiveRecord::Base
     else
       { error: "metric #{metric_name}, unknown data source: #{metric.data_source}" }
     end
-  rescue PG::Error, ActiveRecord::Error => e
+  rescue PG::Error, ActiveRecord::ActiveRecordError => e
     { error: e.message, stack: e.backtrace }
   end
 
