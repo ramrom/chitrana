@@ -14,5 +14,9 @@ Rails.application.routes.draw do
     get '/test_ajax'      => 'metrics#test_ajax'
   end
 
-  get '/user_config' => 'users#config'
+  #resources :users,   only: [:index, :show, :create, :update]
+
+  controller :users do
+    get '/users/:id/config' => 'users#config'
+  end
 end
