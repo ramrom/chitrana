@@ -4,7 +4,7 @@ class MetricsController < ApplicationController
   end
 
   def get_data
-    metric_results = Metric.get_data(metric_name: params.require(:metric_name), opts: parse_opts)
+    metric_results = Metric.get_data(metric_name: permitted_params.require(:metric_name), opts: parse_opts)
     if metric_results[:error].present?
       render json: metric_results, status: :unprocessable_entity
     else
@@ -29,7 +29,11 @@ class MetricsController < ApplicationController
 
   def parse_opts
     {
-      ignore_cache: params.permit(:ignore_cache) == 'true'
+      ignore_cache: permitted_params[:ignore_cache] == "true"
     }
+  end
+
+  def permitted_params
+    params.permit(:ignore_cache, :metric_name)
   end
 end
