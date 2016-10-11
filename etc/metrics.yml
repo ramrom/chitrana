@@ -1,19 +1,21 @@
 loans_per_day_eis:
   sql:
-    select extract(day from l.created_at) as day,extract(month from l.created_at) as month,count(*)
+    select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
     from nbox_portfolio_portfolio.loans l
-    where created_at > CURRENT_DATE - 7
-    group by 1,2 order by 2 desc,1 desc;
+    where created_at > CURRENT_DATE - 14
+    group by 1 order by 1 asc;
   data_source: eis
+  type: time_series_day
   cache_duration: 3600 # 1 hour
 
 loans_per_day_pf:
   sql:
-    select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1)
+    select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
     from portfolio.loans l
     where created_at > CURRENT_DATE - 7
-    group by 1 order by 1 desc;
+    group by 1 order by 1;
   data_source: portfolio
+  type: time_series_day
   cache_duration: 60
 
 loans_per_day_pf2:

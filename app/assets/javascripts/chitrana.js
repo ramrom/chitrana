@@ -37,7 +37,7 @@ function drawGraph(parent_tag, name, data, size) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var parseTime = d3.timeParse("%d-%b-%y");
+  var parseTime = d3.timeParse("%d-%m-%Y");
   data.forEach(function(d) { d.date = parseTime(d.date); d.value = +d.value; });
 
   // set the ranges
@@ -86,6 +86,13 @@ function drawGraph(parent_tag, name, data, size) {
   $('#' + name + ' .grid line')
     .css({'stroke': '#666666', 'stroke-opacity': 0.7, 'shape-rendering': 'crispEdges'});
   $('#' + name + ' .grid path').css({'stroke-width': 0});
+
+  var area = d3.area()
+    //.style('fill', 'lightsteelblue')
+    //.style('stroke-width', 0)
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.value); });
 
   // add the X Axis
   svg.append("g")

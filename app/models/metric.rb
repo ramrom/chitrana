@@ -9,8 +9,9 @@ class Metric < ActiveRecord::Base
 
     if opts[:ignore_cache].present?
       result = retrieve_from_data_source(metric)
-      return result if result[:error].present?
+      return result if result.kind_of?(Hash) && result[:error].present?
       Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
+      cache_expiration = metric.cache_duration.seconds
     else
       cache_object = Rails.cache.send(:read_entry, metric_name, {})
       if cache_object.kind_of?(ActiveSupport::Cache::Entry)
@@ -52,17 +53,18 @@ class Metric < ActiveRecord::Base
   end
 
   def self.transform_data(result)
-    result.to_a.map do |data_point|
-      data_point.each_with_object({}) do |(k,v),o|
-        if k.to_sym == :count
-          o['value'] = v
-        elsif k.to_sym == :date
-          o['date'] = v
-        else
-          o[k] = v
-        end
-      end
-    end
+    #result.to_a.map do |data_point|
+    #  data_point.each_with_object({}) do |(k,v),o|
+    #    if k.to_sym == :count
+    #      o['value'] = v
+    #    elsif k.to_sym == :date
+    #      o['date'] = v
+    #    else
+    #      o[k] = v
+    #    end
+    #  end
+    #end
+    result.to_a
   end
 
   def self.retrieve_data_from_cache
