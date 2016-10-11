@@ -52,7 +52,17 @@ class Metric < ActiveRecord::Base
   end
 
   def self.transform_data(result)
-    result.to_a
+    result.to_a.map do |data_point|
+      data_point.each_with_object({}) do |(k,v),o|
+        if k.to_sym == :count
+          o['value'] = v
+        elsif k.to_sym == :date
+          o['date'] = v
+        else
+          o[k] = v
+        end
+      end
+    end
   end
 
   def self.retrieve_data_from_cache
