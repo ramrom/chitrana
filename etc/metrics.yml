@@ -11,7 +11,8 @@ loans_per_day_eis:
 
 loans_per_day_pf:
   sql:
-    select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
+    #select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
+    select date(created_at) as date, count(1) as value
     from portfolio.loans l
     where created_at > CURRENT_DATE - 7
     group by 1 order by 1;
@@ -26,6 +27,7 @@ loans_per_day_pf2:
     where created_at > CURRENT_DATE - 7
     group by 1,2,3 order by 3 desc,2 desc,1 desc;
   data_source: portfolio
+  type: time_series_hour
   cache_duration: 60
 
 credit_report_errors_hour_eis:

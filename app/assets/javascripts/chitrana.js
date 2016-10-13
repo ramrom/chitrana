@@ -8,7 +8,7 @@ function make_x_gridlines() { return d3.axisBottom(x).ticks(5); }
 function make_y_gridlines() { return d3.axisLeft(y).ticks(5) }
 
 // draw a graph!
-function drawGraph(parent_tag, name, data, size) {
+function drawGraph(parent_tag, name, data, size, opts) {
   if (size.width && size.height) {
     width = size.width; height = size.height;
   } else { width = 960; height = 500; }
@@ -38,6 +38,8 @@ function drawGraph(parent_tag, name, data, size) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   var parseTime = d3.timeParse("%d-%m-%Y");
+  if (opts.time_format) { parseTime = d3.timeParse(opts.time_format); }
+
   data.forEach(function(d) { d.date = parseTime(d.date); d.value = +d.value; });
 
   // set the ranges

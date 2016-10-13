@@ -9,28 +9,29 @@ class Metric < ActiveRecord::Base
 
     if opts[:ignore_cache].present?
       result = retrieve_from_data_source(metric)
-      return result if result.kind_of?(Hash) && result[:error].present?
-      Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
+      return result if result[:error].present?
+      Rails.cache.write metric_name, result[:data], expires_in: metric.cache_duration.seconds
       cache_expiration = metric.cache_duration.seconds
     else
       cache_object = Rails.cache.send(:read_entry, metric_name, {})
       if cache_object.kind_of?(ActiveSupport::Cache::Entry)
         cache_hit = true
         cache_expiration = Time.at(cache_object.expires_at) - Time.now
-        result = Rails.cache.read metric_name
+        result = { data: Rails.cache.read(metric_name) }
       else
         result = retrieve_from_data_source(metric)
-        return result if result.kind_of?(Hash) && result[:error].present?
-        Rails.cache.write metric_name, result, expires_in: metric.cache_duration.seconds
+        return result if result[:error].present?
+        Rails.cache.write metric_name, result[:data], expires_in: metric.cache_duration.seconds
         cache_expiration = metric.cache_duration
       end
     end
 
     total_time = Time.now - start_time
     Rails.logger.info "metric_name: #{metric_name}, query_time: #{total_time},\
-      cache_hit: #{cache_hit}, cache_expiration: #{cache_expiration}"
+      cache_hit: #{cache_hit}, cache_expiration: #{cache_expiration}, data_trans_time: #{result[:data_transform_time]}"
     {
-      data: result,
+      data: result[:data],
+      tranform_time: result[:data_transform_time],
       query_time: total_time,
       cache_hit: cache_hit,
       cache_expiration: cache_expiration
@@ -41,10 +42,14 @@ class Metric < ActiveRecord::Base
     case metric.data_source
     when 'portfolio'
       result = DataSource.portfolio_db.exec metric.sql
-      transform_data(result)
+      start = Time.now
+      data = transform_data(result)
+      { data: data, data_transform_time: Time.now - start }
     when 'eis'
       result = EISSource.connection.execute metric.sql
-      transform_data(result)
+      start = Time.now
+      data = transform_data(result)
+      { data: data, data_transform_time: Time.now - start }
     else
       { error: "metric #{metric_name}, unknown data source: #{metric.data_source}" }
     end
