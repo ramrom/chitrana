@@ -27,8 +27,9 @@ class Metric < ActiveRecord::Base
     end
 
     total_time = Time.now - start_time
-    Rails.logger.info "metric_name: #{metric_name}, query_time: #{total_time},\
-      cache_hit: #{cache_hit}, cache_expiration: #{cache_expiration}, data_trans_time: #{result[:data_transform_time]}"
+    Rails.logger.info "metric_name: #{metric_name}, query_time: #{total_time}, data_size: #{result[:data].size}"
+    Rails.logger.info "cache_hit: #{cache_hit}, cache_expiration: #{cache_expiration},\
+      data_trans_time: #{result[:data_transform_time]}"
     {
       data: result[:data],
       tranform_time: result[:data_transform_time],
@@ -43,21 +44,42 @@ class Metric < ActiveRecord::Base
     when 'portfolio'
       result = DataSource.portfolio_db.exec metric.sql
       start = Time.now
-      data = transform_data(result)
+      data = transform_data(metric, result)
+      { data: data, data_transform_time: Time.now - start }
+    when 'identity'
+      result = DataSource.identity_db.exec metric.sql
+      start = Time.now
+      data = transform_data(metric, result)
       { data: data, data_transform_time: Time.now - start }
     when 'eis'
       result = EISSource.connection.execute metric.sql
       start = Time.now
-      data = transform_data(result)
+      data = transform_data(metric, result)
       { data: data, data_transform_time: Time.now - start }
     else
-      { error: "metric #{metric_name}, unknown data source: #{metric.data_source}" }
+      { error: "metric #{metric.metric_name}, unknown data source: #{metric.data_source}" }
     end
   rescue PG::Error, ActiveRecord::ActiveRecordError => e
     { error: e.message, stack: e.backtrace }
   end
 
-  def self.transform_data(result)
+  def self.validate_data(metric, data)
+    case metric.type
+    when 'time_series_day'
+      data.all? do |data_point|
+        ['date', 'value'] == data_point.keys.sort &&
+        data_point['date'] =~ /[1-2]\d{3}-[0-1]\d-[0-3]\d/
+      end
+    when 'time_series_hour'
+      data.all? do |data_point|
+        ['date', 'hour', 'value'] == data_point.keys.sort &&
+        data_point['date'] =~ /[1-2]\d{3}-[0-1]\d-[0-3]\d/ &&
+        data_point['hour'] =~ /[0-2][0-9]/
+      end
+    end
+  end
+
+  def self.transform_data(metric, data)
     #result.to_a.map do |data_point|
     #  data_point.each_with_object({}) do |(k,v),o|
     #    if k.to_sym == :count
@@ -69,7 +91,7 @@ class Metric < ActiveRecord::Base
     #    end
     #  end
     #end
-    result.to_a
+    data.to_a
   end
 
   def self.retrieve_data_from_cache

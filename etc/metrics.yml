@@ -1,6 +1,5 @@
 loans_per_day_eis:
   sql:
-    #select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
     select date(created_at) as date, count(1) as value
     from nbox_portfolio_portfolio.loans l
     where created_at > CURRENT_DATE - 11
@@ -14,11 +13,21 @@ loans_per_day_pf:
     #select to_char(date(created_at), 'DD-MM-YYYY') as date, count(1) as value
     select date(created_at) as date, count(1) as value
     from portfolio.loans l
-    where created_at > CURRENT_DATE - 7
+    where created_at > CURRENT_DATE - 30
     group by 1 order by 1;
   data_source: portfolio
   type: time_series_day
-  cache_duration: 60
+  cache_duration: 86400 # 3600 * 24 -> 1 day
+
+loan_applications_per_day_pf:
+  sql:
+    select date(created_at) as date, count(1) as value
+    from portfolio.loan_applications la
+    where created_at > CURRENT_DATE - 130
+    group by 1 order by 1;
+  data_source: portfolio
+  type: time_series_day
+  cache_duration: 86400 # 3600 * 24 -> 1 day
 
 loans_per_day_pf2:
   sql:
@@ -28,13 +37,24 @@ loans_per_day_pf2:
     group by 1,2,3 order by 3 desc,2 desc,1 desc;
   data_source: portfolio
   type: time_series_hour
-  cache_duration: 60
+  cache_duration: 86400 # 3600 * 24 -> 1 day
+
+credit_report_errors_hour_iden:
+  sql:
+    select date(created_at), extract(hour from created_at) as hour, count(1)
+    from identity.credit_report_errors cre
+    where created_at > CURRENT_DATE - 2
+    group by 1,2 order by 1,2;
+  data_source: identity
+  type: time_series_hour
+  cache_duration: 3600 # 1 hour
 
 credit_report_errors_hour_eis:
   sql:
     select date(created_at), extract(hour from created_at) as hour, count(1)
-    from loan_applications
+    from nbox_identity_identity.credit_report_errors cre
+    where created_at > CURRENT_DATE - 2
     group by 1,2 order by 1,2;
   data_source: eis
   type: time_series_hour
-  cache_duration: 60
+  cache_duration: 3600 # 1 hour

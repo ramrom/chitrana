@@ -18,16 +18,12 @@ chart:
   - graph label
   - atleast two themes, dark and light
   - a specific metric or data being displayed in a specific format
-    - e.g. weather in chicago per day over for the last week, displayed as a line chart
+    - e.g. weather in chicago per day over for the last week, displayed as a line chart or bar chart
   - it has properties
     - textual: for line/bar: x-axis label, y-axis label, chart title, caption
     - graphical: line style (color, thickness, brightness), same for borders, gridlines, absolute size
   - can have multiple data sources?
-  - can be displayed in different chart types/formats? (line chart vs bar chart)
-  - API: 
-    - each call returns the raw data
-    - query run time
-    - proper error code if data source failed
+  - mouse hover over line shows specific value in tooltip
 
 chart on FE with d3js:
   - button to reload/re-render the chart
@@ -36,6 +32,7 @@ chart on FE with d3js:
   - shows a spinner icon or something when data (ajax call) is in process of being fetched
   - display/remove axis labels
   - display/remove grid lines for line and bar chart
+  - BUG: on x-axis, the time/dates are ovelapping if there are a lot of data points
 
 - Admin
   - globally accessible, so you can display easy in a panel

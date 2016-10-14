@@ -37,8 +37,9 @@ function drawGraph(parent_tag, name, data, size, opts) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  // set the time format if specified otherwise use default
   var parseTime = d3.timeParse("%d-%m-%Y");
-  if (opts.time_format) { parseTime = d3.timeParse(opts.time_format); }
+  if (opts && opts.time_format) { parseTime = d3.timeParse(opts.time_format); }
 
   data.forEach(function(d) { d.date = parseTime(d.date); d.value = +d.value; });
 

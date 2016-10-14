@@ -8,6 +8,10 @@ class DataSource
     conn = PG::Connection.open(dbname: 'portfolio_development')
   end
 
+  def self.identity_db
+    conn = PG::Connection.open(dbname: 'identity_development')
+  end
+
   def self.pp(res)
     rows_count = res.num_tuples
     column_names = res.fields
