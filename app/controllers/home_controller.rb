@@ -21,6 +21,19 @@ class HomeController < ApplicationController
   def d4
   end
 
+  def dostuff
+    if params.require(:act) == "light"
+      result = `../haus/haus.py light`
+      render text: result
+    else
+      puts params.count
+      render text: "no valid action given\n"
+    end
+  end
+
+  def erbtest
+  end
+
   private
 
 

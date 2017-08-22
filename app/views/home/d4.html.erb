@@ -1,0 +1,43 @@
+<div id='mypanel' style='background-color:#222222'></div>
+
+<script>
+var data = [ { date: '01-05-2012', value: 58.13 },
+             { date: '30-04-2012', value: 53.98 },
+             { date: '27-04-2012', value: 67.00 },
+             { date: '26-04-2012', value: 89.70 },
+             { date: '25-04-2012', value: 99.00 },
+             { date: '24-04-2012', value: 130.28 },
+             { date: '23-04-2012', value: 166.70 },
+             { date: '20-04-2012', value: 234.98 },
+             { date: '19-04-2012', value: 345.44 },
+             { date: '18-04-2012', value: 443.34 },
+             { date: '17-04-2012', value: 543.70 },
+             { date: '16-04-2012', value: 580.13 },
+             { date: '13-04-2012', value: 605.23 },
+             { date: '12-04-2012', value: 622.77 },
+             { date: '11-04-2012', value: 626.20 },
+             { date: '09-04-2012', value: 636.23 },
+             { date: '05-04-2012', value: 633.68 },
+             { date: '04-04-2012', value: 624.31 },
+             { date: '03-04-2012', value: 629.32 },
+             { date: '02-04-2012', value: 618.63 },
+             { date: '30-03-2012', value: 599.55 },
+             { date: '29-03-2012', value: 609.86 },
+             { date: '28-03-2012', value: 617.62 },
+             { date: '27-03-2012', value: 614.48 },
+             { date: '26-03-2012', value: 606.98 } ];
+drawGraph('mypanel', 'mygraph', data, 3);
+
+var data2 = [ { date: '1-05-2012',  value:58.13 },
+              { date: '30-04-2012', value:53.98 },
+              { date: '27-04-2012', value:67.00 },
+              { date: '26-04-2012', value:89.70 } ];
+//drawGraph('mypanel', 'mygraph2', data2, { width: 600, height: 300}, { time_format: "%d-%m-%Y" });
+drawGraph('mypanel', 'mygraph2', data2, { width: 600, height: 300});
+
+$.get('get_data?metric_name=loans_per_day_pf&ignore_cache=true',
+  function(response) {
+    drawGraph('mypanel', 'mygraph3', response.data, { width: 600, height: 300}, { time_format: "%Y-%m-%d" } ) 
+  }
+);
+</script>

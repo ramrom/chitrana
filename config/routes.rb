@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   get '/d3'             => 'home#d3'
   get '/d4'             => 'home#d4'
+  get '/erbtest'        => 'home#erbtest'
   get '/bootstrap'      => 'home#bootstrap'
+  get '/dostuff'        => 'home#dostuff'
 
   resources :metrics,   only: [:index, :show, :create, :update]
 

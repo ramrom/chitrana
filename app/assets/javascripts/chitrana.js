@@ -90,13 +90,6 @@ function drawGraph(parent_tag, name, data, size, opts) {
     .css({'stroke': '#666666', 'stroke-opacity': 0.7, 'shape-rendering': 'crispEdges'});
   $('#' + name + ' .grid path').css({'stroke-width': 0});
 
-  var area = d3.area()
-    //.style('fill', 'lightsteelblue')
-    //.style('stroke-width', 0)
-    .x(function(d) { return x(d.date); })
-    .y0(height)
-    .y1(function(d) { return y(d.value); });
-
   // add the X Axis
   svg.append("g")
     .attr('class', 'axis')
@@ -110,9 +103,11 @@ function drawGraph(parent_tag, name, data, size, opts) {
     .style('stroke','#dddddd')
     .call(d3.axisLeft(y));
 
-  // Area fill under graph
-  //var area = d3.svg.area()
-  //  .x(function(d) { return x(d.date); })
-  //  .y0(height)
-  //  .y1(function(d) { return y(d.value); });
+  // fill the area under the line
+  var area = d3.area()
+    //.style('fill', 'lightsteelblue')
+    //.style('stroke-width', 0)
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.value); });
 }

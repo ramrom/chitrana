@@ -43,3 +43,7 @@ TODO FOR SURE:
   - cache should use namespace in redis
   - check out new relic insights to see what i want to do
   - check out smallbusiness?(was that the name, it uses EIS) and see what feature are cool
+
+Refs:
+ - https://github.com/d3/d3-time-format
+ - https://www.dashingd3js.com/dynamic-svg-coordinate-space
