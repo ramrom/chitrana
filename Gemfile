@@ -30,6 +30,8 @@ gem 'figgy'
 # redis used for low level caching
 gem 'redis-rails'
 
+gem 'listen' # needed by ActiveSupport::EventFileUpdaterCheck (see dev env file)
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
