@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   def self.get_config
     {
       user_name: 'bob',

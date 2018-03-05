@@ -1,4 +1,4 @@
-class Metric < ActiveRecord::Base
+class Metric < ApplicationRecord
   def self.get_data(metric_name:, opts: {})
     start_time = Time.now
     cache_expiration = 'unknown'

@@ -1,3 +1,3 @@
-class EISSource < ActiveRecord::Base
+class EISSource < ApplicationRecord
   establish_connection :eis
 end
