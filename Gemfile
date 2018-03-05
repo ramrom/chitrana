@@ -19,7 +19,7 @@ gem 'bootstrap-sass'
 gem 'd3-rails'
 
 # React.js
-#gem 'react-rails'
+gem 'react-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -37,7 +37,6 @@ gem 'listen' # needed by ActiveSupport::EventFileUpdaterCheck (see dev env file)
 
 group :development, :test do
   gem 'pry'
-  gem 'react-rails-hot-loader'
 end
 
 group :development do
